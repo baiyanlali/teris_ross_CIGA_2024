@@ -23,15 +23,18 @@ func _ready() -> void:
 		h_box_container.add_child(go)
 		go.button.text = type.emoji
 		go.button.pressed.connect(on_buy_type.bind(type))
+		go.label.text = ""
+		for i in range(type.cost):
+			go.label.text += "$"
 	
 	tween.tween_property(self, "position:y", 0, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	next.pressed.connect(close_shop)
+	
 func on_buy_type(element: TerisElement.ElementType):
-	if Absolute.player_money <= 0:
+	if Absolute.player_money <= 0 or Absolute.player_money - element.cost < 0:
 		return
-	print("buy %s" % element.emoji)
 	Absolute.player_type.append(element)
-	Absolute.player_money -= 1
+	Absolute.player_money -= element.cost
 	sync_type(Absolute.player_type)
 
 func show_shop():

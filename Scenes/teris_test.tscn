@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://bsnru5sy45us1"]
+
+[ext_resource type="Script" path="res://Scripts/teris.gd" id="1_acknu"]
+[ext_resource type="PackedScene" uid="uid://wq7365nilp3d" path="res://Scenes/emoji_player.tscn" id="2_vkkdo"]
+[ext_resource type="Texture2D" uid="uid://h08bge2y8s28" path="res://Assets/emojis/u1f604_u1f913.png" id="3_dlact"]
+[ext_resource type="Texture2D" uid="uid://cl1wput4sa7ep" path="res://Assets/emojis/u1f604_u1f62e.png" id="4_ksmx4"]
+[ext_resource type="Texture2D" uid="uid://djkb4lcx0kcvg" path="res://Assets/emojis/u1f604_u1f62d.png" id="5_ebwm4"]
+[ext_resource type="Texture2D" uid="uid://cjvvgkngmpnjx" path="res://Assets/emojis/u1f604_u1f630.png" id="6_0anpu"]
+[ext_resource type="PackedScene" uid="uid://vp43s5xlc00l" path="res://Scenes/shop.tscn" id="7_bmhnw"]
+
+[sub_resource type="GDScript" id="GDScript_7fjyj"]
+resource_name = "teris_test"
+script/source = "extends Node
+@onready var button: Button = $\"../Button\"
+@onready var teris: TerisManager = $\"..\"
+
+
+
+#func _on_button_pressed() -> void:
+	#TerisManager.
+"
+
+[node name="Teris" type="Node2D"]
+script = ExtResource("1_acknu")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 102.0
+offset_top = 85.0
+offset_right = 182.0
+offset_bottom = 116.0
+text = "Generate"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Player1" parent="." instance=ExtResource("2_vkkdo")]
+position = Vector2(322, 600)
+
+[node name="Player2" parent="." instance=ExtResource("2_vkkdo")]
+position = Vector2(1626, 600)
+EMOJI_NORMAL = ExtResource("3_dlact")
+EMOJI_HIT = ExtResource("4_ksmx4")
+EMOJI_HAPPY = ExtResource("5_ebwm4")
+EMOJI_LOWHP = ExtResource("6_0anpu")
+
+[node name="Control" type="Control" parent="."]
+z_index = 100
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shop" parent="Control" instance=ExtResource("7_bmhnw")]
+z_index = 100
+layout_mode = 1
+
+[node name="Node" type="Node" parent="."]
+script = SubResource("GDScript_7fjyj")
+
+[connection signal="pressed" from="Button" to="Node" method="_on_button_pressed"]

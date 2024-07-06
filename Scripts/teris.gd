@@ -80,6 +80,13 @@ func start_game():
 	Absolute.BluePlayer = blue_player
 	Absolute.YellowPlayer = yellow_player
 	
+	Absolute.BluePlayer.HP = Absolute.BluePlayer.MAXHP
+	Absolute.YellowPlayer.HP = Absolute.YellowPlayer.MAXHP
+	
+	$SpawnTimer.start()
+	$Timer.start()
+
+func resume_game():
 	$SpawnTimer.start()
 	$Timer.start()
 
@@ -88,11 +95,9 @@ func stop_game():
 	$Timer.stop()
 
 func _ready() -> void:
+	Absolute.TerisManager = self
 	init_grid()
 	shop.show_shop()
-	shop.on_shop_close.connect(
-		start_game
-	)
 	
 	$SpawnTimer.timeout.connect(func(): 
 		if len(current_fall_chunk) == 0:
@@ -100,8 +105,6 @@ func _ready() -> void:
 			var chunks := generate_chunks(type, Vector2i(randi_range(0, GRID_WIDTH - 1 - len(type)), 0))
 			current_fall_chunk.append_array(chunks)
 		)
-	#current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random(), Vector2i(3, 1)))
-	#$Button.pressed.connect(func(): current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random())))
 	$Timer.timeout.connect(teris_down)
 
 
@@ -182,7 +185,10 @@ func generate_chunks(chunks: Array, offset: Vector2i = Vector2i.ZERO) -> Array[V
 				#sprite.modulate = Color(1, 0, 0, 1)
 				go.scale = get_grid_size(size)
 				Grid[x][y].teris_hold = go
-				go.element_type = Absolute.player_type.pick_random()
+				if current_player == Player.BLUE:
+					go.element_type = Absolute.player_type.pick_random()
+				else:
+					go.element_type = Absolute.enemy_type.pick_random()
 				#go.position = get_real_position(i, j)
 	current_player = 1 - current_player
 	return chunks_pos
@@ -194,6 +200,8 @@ func pass_teris_hold(s1: TerisGrid, s2: TerisGrid):
 	s2.teris_hold = s1.teris_hold
 	s1.teris_hold = temp_hold
 	#print("exchange ", s1.grid_pos, s2.grid_pos)
+
+
 
 func pass_teris_many(s1: Array, s2: Array):
 	assert(len(s1) ==  len(s2))
@@ -221,9 +229,9 @@ func teris_down() -> void:
 			# 固定起来
 			current_fall_chunk.clear()
 			# 检查是否可以消除
+			OnTerisLand.emit()
 			check_and_clear()
 			$SpawnTimer.start()
-			OnTerisLand.emit()
 	# 没有问题，可以掉下去
 	for fall_grid in fall_chunk:
 			# 不固定，往下掉
@@ -231,8 +239,40 @@ func teris_down() -> void:
 			new_fall_chunk.append(Vector2i(fall_grid.x, fall_grid.y + 1))
 	current_fall_chunk = new_fall_chunk
 
+func fall_down_fast(teris_above: Array[Vector2i]):
+	#print("teris down!")
+	var fall_chunk := teris_above as Array[Vector2i]
+	var new_fall_chunk: Array[Vector2i] = []
+	if(len(fall_chunk) == 0): return
+	# 按照y轴降序排序
+	fall_chunk.sort_custom(func(a, b): return a.y > b.y)
+	# 监测最底下一层grid是否会往下掉，也就是y最大的grid
+	var lowest_y = fall_chunk[0].y
+	
+	var has_reach_below := false
+	
+	while not has_reach_below:
+		lowest_y = fall_chunk[0].y
+		for fall_grid in fall_chunk:
+			if fall_grid.y != lowest_y:
+				break
+			#print(fall_grid.y + 1)
+			if fall_grid.y + 1 == GRID_HEIGHT \
+				or (Grid[fall_grid.x][fall_grid.y + 1].teris_hold):
+				# 固定起来
+				has_reach_below = true
+				print("reach below!")
+				return
+		# 没有问题，可以掉下去
+		for fall_grid in fall_chunk:
+			# 不固定，往下掉
+			pass_teris_hold(Grid[fall_grid.x][fall_grid.y], Grid[fall_grid.x][fall_grid.y + 1])
+			new_fall_chunk.append(Vector2i(fall_grid.x, fall_grid.y + 1))
+		fall_chunk = new_fall_chunk
+
 func check_and_clear() -> void:
 	assert(len(current_fall_chunk) == 0)
+	var new_fall_chunk: Array[Vector2i] = []
 	for j in range(GRID_HEIGHT-1, -1, -1):
 		# 检查横向是否可以消除
 		var is_clearable := true
@@ -243,21 +283,23 @@ func check_and_clear() -> void:
 		
 		if is_clearable:
 			for i in range(GRID_WIDTH):
-				var teris = Grid[i][j].teris_hold
-				teris.queue_free()
+				var teris: TerisElement = Grid[i][j].teris_hold
+				teris.hide()
+				get_tree().create_timer(2).timeout.connect(func(): teris.queue_free())
+				#teris.queue_free()
 				Grid[i][j].teris_hold = null
 			#把这一行以上的所有内容设计为fall_chunks
 			
 			for jj in range(j - 1, -1, -1):
 				for i in range(GRID_WIDTH):
-					if Grid[i][jj]:
-						current_fall_chunk.append(Vector2i(i, jj))
-			while len(current_fall_chunk) != 0:
-				teris_down()	
+					if Grid[i][jj].teris_hold:
+						new_fall_chunk.append(Vector2i(i, jj))
+			fall_down_fast(new_fall_chunk)
+				#teris_down()	
 
 
 func check_boundary(pos: Vector2i):
-	if pos.x >=0 and pos.x <= GRID_WIDTH and pos.y >=0 and pos.y <=GRID_HEIGHT:
+	if pos.x >=0 and pos.x < GRID_WIDTH and pos.y >=0 and pos.y < GRID_HEIGHT:
 		return true
 	return false
 
@@ -278,11 +320,15 @@ func rotate_fall_chunks() -> void:
 	var miny :int= fall_chunk.reduce(func(min: Vector2i, val: Vector2i): 
 		return val if val.y < min.y else min).y
 		
+	var maxx :int= fall_chunk.reduce(func(min: Vector2i, val: Vector2i): 
+		return val if val.x > min.x else min).x
+	var maxy :int= fall_chunk.reduce(func(min: Vector2i, val: Vector2i): 
+		return val if val.y > min.y else min).y
 	# 求旋转后的
 	
 	var new_fall_chunk := fall_chunk.map(func(pos: Vector2i): 
 		$Timer.start()
-		return ROTATION(pos, 90, Vector2i(minx, miny)))
+		return ROTATION(pos, 90, Vector2i(int((minx + maxx) / 2), int((miny + maxy) / 2))))
 	# 是否超出界限
 	if not new_fall_chunk.all(func(pos: Vector2i): return check_boundary(pos)):
 		$Timer.start()

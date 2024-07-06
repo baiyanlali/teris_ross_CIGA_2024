@@ -1,18 +1,42 @@
 extends Node
+signal on_money_changed
+
+@onready var tween: Tween = create_tween()
+const HIT_PARTICLE = preload("res://Scenes/hit_particle.tscn")
+
 var TerisManager: TerisManager = null
-var BluePlayer: EmojiPlayer
-var YellowPlayer: EmojiPlayer
+var BluePlayer: EmojiPlayer = null
+var YellowPlayer: EmojiPlayer = null
+
+var player_type: Array = []
+
+var enemy_type: Array = [
+	EnemyElementType.Archer.new(),
+	EnemyElementType.Archer.new(),
+	EnemyElementType.Archer.new(),
+]
+
+var shop_window: Shop = null:
+	set(val):
+		shop_window = val
+		shop_window.on_shop_close.connect(start_new_turn)
+		
 
 var player_money: int = 5:
 	set(val):
 		player_money = val
 		on_money_changed.emit(player_money)
 
-signal on_money_changed
+#func _ready() -> void:
+	#tween.finished.connect(func():
+		#if len(hit_anim_bus) != 0:
+			#var anim_func = hit_anim_bus.pop_front()
+			#anim_func.call()
+	#)
 
-var player_type: Array = []
-
-var shop_window: Shop = null
+func start_new_turn():
+	TerisManager.start_game()
+	pass
 
 func _process(delta: float) -> void:
 	if BluePlayer and YellowPlayer:
@@ -20,3 +44,66 @@ func _process(delta: float) -> void:
 			TerisManager.stop_game()
 			await get_tree().create_timer(0.5).timeout
 			shop_window.show_shop()
+		if BluePlayer.HP <= 0:
+			get_tree().change_scene_to_file("res://Scenes/false_scene.tscn")
+
+var hit_anim_bus := []
+
+const TRANS_TYPES_FOR_HIT = [
+	Tween.TRANS_BACK,
+	Tween.TRANS_BOUNCE,
+	Tween.TRANS_CIRC,
+	Tween.TRANS_CUBIC,
+	Tween.TRANS_EXPO,
+	Tween.TRANS_LINEAR,
+	Tween.TRANS_QUAD,
+]
+
+func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlayer, on_hit_anim_start: Callable, on_hit_anim_end: Callable):
+	var animation := func():
+		TerisManager.stop_game()
+		if on_hit_anim_start and on_hit_anim_start.is_valid():
+			on_hit_anim_start.call()
+		if not elemt or not target:
+			TerisManager.resume_game()
+			hit_anim_bus.pop_front()
+			if len(hit_anim_bus) != 0:
+				var anim_func = hit_anim_bus[0]
+				anim_func.call()
+			return
+		var go: HitParticle = HIT_PARTICLE.instantiate()
+		
+		add_child(go)
+		go.global_position = elemt.global_position
+		
+		if origin == target:
+			go.sprite.modulate = Color.GREEN
+		else:
+			if target == BluePlayer:
+				go.sprite.modulate = Color.YELLOW
+			elif target == YellowPlayer:
+				go.sprite.modulate = Color.BLUE
+		
+		tween = create_tween()
+		tween.tween_property(go, "global_position:x", target.global_position.x, 1).set_ease(Tween.EASE_OUT).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		tween.parallel().tween_property(go, "global_position:y", target.global_position.y, 1).set_ease(Tween.EASE_OUT).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		tween.parallel().tween_property(go, "skew", 720, 1).set_ease(Tween.EASE_OUT).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		
+		await get_tree().create_timer(0.5).timeout
+		if on_hit_anim_end and on_hit_anim_end.is_valid():
+			on_hit_anim_end.call()
+		await tween.finished
+		
+		if not TerisManager:
+			hit_anim_bus = []
+			return
+		TerisManager.resume_game()
+		hit_anim_bus.pop_front()
+		if len(hit_anim_bus) != 0:
+			var anim_func = hit_anim_bus[0]
+			anim_func.call()
+
+	hit_anim_bus.append(animation)
+	
+	if len(hit_anim_bus) == 1:
+		await hit_anim_bus[0].call()

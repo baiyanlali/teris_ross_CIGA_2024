@@ -43,6 +43,5 @@ offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 51
-text = "$"
+text = "$$$$$$$$$$"
 horizontal_alignment = 1
-vertical_alignment = 1

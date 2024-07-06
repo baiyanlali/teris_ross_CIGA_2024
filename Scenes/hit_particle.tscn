@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://wrs3jxepetd6"]
+
+[ext_resource type="Texture2D" uid="uid://d14q1fqlutqm1" path="res://Assets/particle.png" id="1_cfq71"]
+[ext_resource type="Script" path="res://Scripts/particle.gd" id="1_uljd2"]
+
+[node name="HitParticle" type="Node2D"]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_uljd2")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_cfq71")

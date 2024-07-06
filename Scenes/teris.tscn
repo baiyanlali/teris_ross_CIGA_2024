@@ -19,7 +19,7 @@ offset_bottom = 116.0
 text = "Generate"
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.6
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 0.5
