@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://dm77y5k7ewg4u"]
+
+[ext_resource type="Script" path="res://Scripts/teris_element.gd" id="1_6oha4"]
+[ext_resource type="Texture2D" uid="uid://b1cfdo33dji5l" path="res://Assets/Border_blue.png" id="2_irwjl"]
+
+[node name="TerisElement" type="Node2D"]
+script = ExtResource("1_6oha4")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_irwjl")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Emoji" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 219
+text = "🌹"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CountDown" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.234958, 0.234958, 0.234958, 0.8)
+theme_override_font_sizes/font_size = 219
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1

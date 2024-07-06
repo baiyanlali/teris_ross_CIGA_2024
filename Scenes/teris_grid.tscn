@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://cvc7pgc6lff2e"]
 
 [ext_resource type="Script" path="res://Scripts/grid_container.gd" id="1_0p6vx"]
-[ext_resource type="Texture2D" uid="uid://b1cfdo33dji5l" path="res://Assets/Border.png" id="1_8d01w"]
+[ext_resource type="Texture2D" uid="uid://ci45fvwuxbwpy" path="res://Assets/BackTile_white.png" id="2_llkln"]
 
 [node name="TerisGrid" type="Node2D"]
 script = ExtResource("1_0p6vx")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("1_8d01w")
+texture = ExtResource("2_llkln")

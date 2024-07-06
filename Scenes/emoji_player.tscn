@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://wq7365nilp3d"]
+
+[ext_resource type="Script" path="res://Scripts/emoji_player.gd" id="1_17f5v"]
+[ext_resource type="Texture2D" uid="uid://m8pv34cf84cy" path="res://Assets/emojis/u1f60e_u1f47d.png" id="2_gt1vn"]
+[ext_resource type="Texture2D" uid="uid://bhoijhgxgglxa" path="res://Assets/emojis/u1f622_u1f47d.png" id="3_lyl48"]
+[ext_resource type="Texture2D" uid="uid://dd8ybmlwjt813" path="res://Assets/emojis/u1f917_u1f47d.png" id="4_mwlc0"]
+
+[node name="EmojiPlayer" type="Node2D"]
+script = ExtResource("1_17f5v")
+EMOJI_NORMAL = ExtResource("2_gt1vn")
+EMOJI_HIT = ExtResource("3_lyl48")
+EMOJI_HAPPY = ExtResource("4_mwlc0")
+EMOJI_LOWHP = ExtResource("3_lyl48")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_gt1vn")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -451.0
+offset_right = 40.0
+offset_bottom = -411.0
+
+[node name="ProgressBar" type="ProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = -200.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 150.0
+value = 30.1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

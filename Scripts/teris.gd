@@ -1,6 +1,9 @@
 extends Node2D
 class_name TerisManager
 
+signal OnTerisLand
+signal OnTerisExplode
+
 var Grid: Array[Array] = []
 
 const GRID_WIDTH = 10
@@ -8,7 +11,9 @@ const GRID_HEIGHT = 14
 
 const GRID_SIZE = 64
 
-@export var grid_container_scene: PackedScene
+#@export var grid_container_scene: PackedScene
+const grid_container_scene = preload("res://Scenes/teris_grid.tscn")
+const teris_element_scene: PackedScene = preload("res://Scenes/teris_element.tscn")
 
 const TYPE1 = [
 	[1, 0],
@@ -46,18 +51,50 @@ const TYPE6 = [
 	[1,],
 ]
 
-#const AVAILABLE_CHUNK_TYPE = [
-	#TYPE1,
-	#TYPE2,
-	#TYPE3,
-	#TYPE4,
-	#TYPE5,
-	#TYPE6,
-#]
-
 const AVAILABLE_CHUNK_TYPE = [
+	TYPE1,
 	TYPE2,
+	TYPE3,
+	TYPE4,
+	TYPE5,
+	TYPE6,
 ]
+
+#const AVAILABLE_CHUNK_TYPE = [
+	#TYPE2,
+#]
+enum Player {
+	BLUE, YELLOW
+}
+
+var current_player : Player= Player.BLUE
+@onready var blue_player: EmojiPlayer = $Player1
+@onready var yellow_player: EmojiPlayer = $Player2
+
+var current_fall_chunk: Array[Vector2i] = []
+
+func _ready() -> void:
+	init_grid()
+	$SpawnTimer.timeout.connect(func(): 
+		if len(current_fall_chunk) == 0:
+			var type = AVAILABLE_CHUNK_TYPE.pick_random()
+			var chunks := generate_chunks(type, Vector2i(randi_range(0, GRID_WIDTH - 1 - len(type)), 0))
+			current_fall_chunk.append_array(chunks)
+		)
+	#current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random(), Vector2i(3, 1)))
+	#$Button.pressed.connect(func(): current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random())))
+	$Timer.timeout.connect(teris_down)
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("move_left"):
+		move_fall_chunks(-1)
+	if Input.is_action_just_pressed("move_right"):
+		move_fall_chunks(1)
+	if Input.is_action_just_pressed("move_down"):
+		teris_down()
+	if Input.is_action_just_pressed("rotate"):
+		rotate_fall_chunks()
+
 
 func ROTATION(pos: Vector2i, degree: int = 90, rotation_center: Vector2i = Vector2i.ZERO):
 	
@@ -72,10 +109,9 @@ func ROTATION(pos: Vector2i, degree: int = 90, rotation_center: Vector2i = Vecto
 	var result := Vector2(rx, ry) as Vector2i
 	return result + rotation_center
 
-var current_fall_chunk: Array[Vector2i] = []
 
 func get_real_position(x: int, y: int) -> Vector2:
-	return Vector2(100 + x * GRID_SIZE, 100 + y * GRID_SIZE)
+	return Vector2(1920/2 - GRID_SIZE * GRID_WIDTH /2 + x * GRID_SIZE, 1080 /2 - GRID_SIZE * GRID_HEIGHT / 2 + 100 + y * GRID_SIZE)
 
 func get_grid_size(size: Vector2) -> Vector2:
 	return Vector2( GRID_SIZE / size.x, GRID_SIZE / size.y)
@@ -99,6 +135,12 @@ func init_grid():
 			Grid[i][j] = go
 			go.name = "(%d, %d)" % [i, j]
 
+func get_emoji_player(current_player = current_player):
+	if current_player == Player.BLUE:
+		return blue_player
+	else:
+		return yellow_player
+
 func generate_chunks(chunks: Array, offset: Vector2i = Vector2i.ZERO) -> Array[Vector2i]:
 	var chunks_pos: Array[Vector2i] = []
 	for i in range(len(chunks)):
@@ -107,27 +149,22 @@ func generate_chunks(chunks: Array, offset: Vector2i = Vector2i.ZERO) -> Array[V
 			var y := j + offset.y
 			if chunks[i][j] == 1:
 				chunks_pos.append(Vector2i(x, y))
-				var go: Node2D = grid_container_scene.instantiate()
-				var sprite: Sprite2D = go.get_node("Sprite")
+				var go: TerisElement = teris_element_scene.instantiate()
+				go.player_owner = current_player
+				go.emoji_player = get_emoji_player()
+				go.opponent_player = get_emoji_player(1-current_player)
+				self.add_child(go)
+				OnTerisLand.connect(go.teris_count_down)
+				var sprite: Sprite2D = go.sprite
 				var size := sprite.texture.get_size()
-				sprite.modulate = Color(1, 0, 0, 1)
-				
+				#sprite.modulate = Color(1, 0, 0, 1)
 				go.scale = get_grid_size(size)
 				Grid[x][y].teris_hold = go
 				#go.position = get_real_position(i, j)
-				self.add_child(go)
+	current_player = 1 - current_player
 	return chunks_pos
 	
-func _ready() -> void:
-	init_grid()
-	$SpawnTimer.timeout.connect(func(): 
-		if len(current_fall_chunk) == 0:
-			var chunks := generate_chunks(TYPE3, Vector2i(randi_range(0, GRID_WIDTH - 1 - len(TYPE3)), 0))
-			current_fall_chunk.append_array(chunks)
-		)
-	#current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random(), Vector2i(3, 1)))
-	#$Button.pressed.connect(func(): current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random())))
-	$Timer.timeout.connect(teris_down)
+
 
 func pass_teris_hold(s1: TerisGrid, s2: TerisGrid):
 	var temp_hold = s2.teris_hold
@@ -156,15 +193,14 @@ func teris_down() -> void:
 	var lowest_y = fall_chunk[0].y
 	
 	for fall_grid in fall_chunk:
-		if fall_grid.y != lowest_y:
-			break
-		if fall_grid.y + 1 == GRID_HEIGHT or Grid[fall_grid.x][fall_grid.y + 1].teris_hold:
+		if fall_grid.y + 1 == GRID_HEIGHT \
+			or (Grid[fall_grid.x][fall_grid.y + 1].teris_hold and Vector2i(fall_grid.x, fall_grid.y + 1) not in current_fall_chunk):
 			# 固定起来
 			current_fall_chunk.clear()
 			# 检查是否可以消除
 			check_and_clear()
 			$SpawnTimer.start()
-			return
+			OnTerisLand.emit()
 	# 没有问题，可以掉下去
 	for fall_grid in fall_chunk:
 			# 不固定，往下掉
@@ -194,18 +230,8 @@ func check_and_clear() -> void:
 					if Grid[i][jj]:
 						current_fall_chunk.append(Vector2i(i, jj))
 			while len(current_fall_chunk) != 0:
-				teris_down()
-				
+				teris_down()	
 
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("move_left"):
-		move_fall_chunks(-1)
-	if Input.is_action_just_pressed("move_right"):
-		move_fall_chunks(1)
-	if Input.is_action_just_pressed("move_down"):
-		teris_down()
-	if Input.is_action_just_pressed("rotate"):
-		rotate_fall_chunks()
 
 func check_boundary(pos: Vector2i):
 	if pos.x >=0 and pos.x <= GRID_WIDTH and pos.y >=0 and pos.y <=GRID_HEIGHT:
@@ -220,19 +246,31 @@ func rotate_fall_chunks() -> void:
 	$Timer.stop()
 	var fall_chunk := current_fall_chunk as Array[Vector2i]
 	#var new_fall_chunk: Array[Vector2i] = []
-	if(len(fall_chunk) == 0): return
+	if(len(fall_chunk) == 0): 
+		$Timer.start()
+		return
 	# 分别按照x, y 顺序升序排序
 	var minx :int= fall_chunk.reduce(func(min: Vector2i, val: Vector2i): 
 		return val if val.x < min.x else min).x
 	var miny :int= fall_chunk.reduce(func(min: Vector2i, val: Vector2i): 
 		return val if val.y < min.y else min).y
 		
-	# 求转制
+	# 求旋转后的
 	
 	var new_fall_chunk := fall_chunk.map(func(pos: Vector2i): 
 		return ROTATION(pos, 90, Vector2i(minx, miny)))
+	# 是否超出界限
 	if not new_fall_chunk.all(func(pos: Vector2i): return check_boundary(pos)):
 		return
+	# 是否已经有格子了
+	
+	var is_occupied := new_fall_chunk.any(func(pos: Vector2i): 
+		if pos in fall_chunk:
+			return false
+		return get_grid(pos).teris_hold)
+	if is_occupied:
+		return
+	
 	#print(fall_chunk, new_fall_chunk)
 	#$Timer.start()
 	# 监测最右侧一层grid是否会往右掉
