@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ci45fvwuxbwpy" path="res://Assets/BackTile_white.png" id="2_llkln"]
 
 [node name="TerisGrid" type="Node2D"]
+z_index = -1
 script = ExtResource("1_0p6vx")
 
 [node name="Sprite" type="Sprite2D" parent="."]

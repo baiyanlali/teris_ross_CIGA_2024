@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://stvrrappn8jf"]
+[gd_scene load_steps=8 format=3 uid="uid://stvrrappn8jf"]
 
 [ext_resource type="Script" path="res://Scripts/teris.gd" id="1_mf6rc"]
 [ext_resource type="PackedScene" uid="uid://wq7365nilp3d" path="res://Scenes/emoji_player.tscn" id="2_3e7lx"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cl1wput4sa7ep" path="res://Assets/emojis/u1f604_u1f62e.png" id="4_wxnoh"]
 [ext_resource type="Texture2D" uid="uid://djkb4lcx0kcvg" path="res://Assets/emojis/u1f604_u1f62d.png" id="5_g27y3"]
 [ext_resource type="Texture2D" uid="uid://cjvvgkngmpnjx" path="res://Assets/emojis/u1f604_u1f630.png" id="6_0w3oj"]
+[ext_resource type="PackedScene" uid="uid://vp43s5xlc00l" path="res://Scenes/shop.tscn" id="7_mqgp8"]
 
 [node name="Teris" type="Node2D"]
 script = ExtResource("1_mf6rc")
@@ -19,12 +20,10 @@ text = "Generate"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.2
-autostart = true
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
-autostart = true
 
 [node name="Player1" parent="." instance=ExtResource("2_3e7lx")]
 position = Vector2(322, 600)
@@ -35,3 +34,18 @@ EMOJI_NORMAL = ExtResource("3_wfeyc")
 EMOJI_HIT = ExtResource("4_wxnoh")
 EMOJI_HAPPY = ExtResource("5_g27y3")
 EMOJI_LOWHP = ExtResource("6_0w3oj")
+
+[node name="Control" type="Control" parent="."]
+z_index = 100
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shop" parent="Control" instance=ExtResource("7_mqgp8")]
+z_index = 100
+layout_mode = 1

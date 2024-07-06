@@ -72,9 +72,28 @@ var current_player : Player= Player.BLUE
 @onready var yellow_player: EmojiPlayer = $Player2
 
 var current_fall_chunk: Array[Vector2i] = []
+@onready var shop: Shop = $Control/Shop
+
+func start_game():
+	print("start game")
+	Absolute.TerisManager = self
+	Absolute.BluePlayer = blue_player
+	Absolute.YellowPlayer = yellow_player
+	
+	$SpawnTimer.start()
+	$Timer.start()
+
+func stop_game():
+	$SpawnTimer.stop()
+	$Timer.stop()
 
 func _ready() -> void:
 	init_grid()
+	shop.show_shop()
+	shop.on_shop_close.connect(
+		start_game
+	)
+	
 	$SpawnTimer.timeout.connect(func(): 
 		if len(current_fall_chunk) == 0:
 			var type = AVAILABLE_CHUNK_TYPE.pick_random()
@@ -84,6 +103,8 @@ func _ready() -> void:
 	#current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random(), Vector2i(3, 1)))
 	#$Button.pressed.connect(func(): current_fall_chunk.append_array(generate_chunks(AVAILABLE_CHUNK_TYPE.pick_random())))
 	$Timer.timeout.connect(teris_down)
+
+
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("move_left"):
@@ -142,6 +163,7 @@ func get_emoji_player(current_player = current_player):
 		return yellow_player
 
 func generate_chunks(chunks: Array, offset: Vector2i = Vector2i.ZERO) -> Array[Vector2i]:
+	
 	var chunks_pos: Array[Vector2i] = []
 	for i in range(len(chunks)):
 		for j in range(len(chunks[1])):
@@ -160,6 +182,7 @@ func generate_chunks(chunks: Array, offset: Vector2i = Vector2i.ZERO) -> Array[V
 				#sprite.modulate = Color(1, 0, 0, 1)
 				go.scale = get_grid_size(size)
 				Grid[x][y].teris_hold = go
+				go.element_type = Absolute.player_type.pick_random()
 				#go.position = get_real_position(i, j)
 	current_player = 1 - current_player
 	return chunks_pos
@@ -258,9 +281,11 @@ func rotate_fall_chunks() -> void:
 	# 求旋转后的
 	
 	var new_fall_chunk := fall_chunk.map(func(pos: Vector2i): 
+		$Timer.start()
 		return ROTATION(pos, 90, Vector2i(minx, miny)))
 	# 是否超出界限
 	if not new_fall_chunk.all(func(pos: Vector2i): return check_boundary(pos)):
+		$Timer.start()
 		return
 	# 是否已经有格子了
 	

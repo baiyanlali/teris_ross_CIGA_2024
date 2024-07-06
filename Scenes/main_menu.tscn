@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=3 uid="uid://x8u4eve6dn6v"]
+
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_58byw"]
+[ext_resource type="Texture2D" uid="uid://d0ht0mby8nm54" path="res://Assets/white.png" id="1_e8x4o"]
+[ext_resource type="Shader" path="res://Shaders/main_menu.gdshader" id="1_vfvmv"]
+[ext_resource type="Texture2D" uid="uid://e4hnn7om8e27" path="res://Assets/bg.png" id="2_4i4ko"]
+[ext_resource type="Texture2D" uid="uid://cg6sr7vkokkuc" path="res://bg.jpg" id="2_udqdh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xefii"]
+shader = ExtResource("1_vfvmv")
+shader_parameter/scroll_speed = 0.08
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 5.0
+shader_parameter/repeat_y = 5.0
+shader_parameter/row_offset = 1.0
+shader_parameter/texture_to_scroll = ExtResource("2_4i4ko")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_58byw")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color(1, 0.760784, 0.780392, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_e8x4o")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_xefii")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_udqdh")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -521.0
+offset_top = -398.0
+offset_right = 521.0
+offset_bottom = -137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 191
+text = "Rose Battle"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -186.0
+offset_top = 42.0
+offset_right = 186.0
+offset_bottom = 298.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 181
+text = "Play"

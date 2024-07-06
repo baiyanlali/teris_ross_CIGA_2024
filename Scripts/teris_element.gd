@@ -1,11 +1,54 @@
 extends Node2D
 class_name TerisElement
 
+class ElementType:
+	var power: int = 1
+	var description: String = "Oh, no"
+	var emoji: String = "👋"
+	func _init() -> void:
+		pass
+	
+	func before_take_effect(teris: TerisManager):
+		pass
+	
+	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
+		pass
+	
+
+class Rose extends ElementType:
+	func _init() -> void:
+		self.emoji = "🌹"
+		self.power = 1
+		self.description = "Hit enemy."
+	
+	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
+		opponent.HP -= self.power
+
+class Lotus extends ElementType:
+	func _init() -> void:
+		self.emoji = "🪷"
+		self.power = 1
+		self.description = "Heal player."
+		
+	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
+		player.HP += self.power
+
+class SunFlower extends ElementType:
+	func _init() -> void:
+		self.emoji = "🌻"
+		self.power = 1
+		self.description = "Enpower surroundings."
+		
+	func before_take_effect(teris: TerisManager):
+		pass
+
 @onready var sprite: Sprite2D = $Sprite
 @onready var emoji: Label = $Control/Emoji
 @onready var count_down_label: Label = $Control/CountDown
 
+
 @export var max_count_down := 3
+@onready var element_type : ElementType = Rose.new()
 
 @onready var count_down := 3:
 	set(value):
@@ -46,11 +89,13 @@ func teris_count_down():
 	if count_down == 0:
 		count_down = max_count_down
 		trauma = 1
+		element_type.take_effect(emoji_player, opponent_player)
 		if opponent_player:
 			opponent_player.HP -= 1
 		pass
 
 func _process(delta):
+	emoji.text = element_type.emoji
 	if trauma:
 		trauma = max(trauma - decay * delta, 0)
 		shake(trauma, trauma_power)
