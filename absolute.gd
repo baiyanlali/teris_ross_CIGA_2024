@@ -119,10 +119,10 @@ func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlaye
 		tween.parallel().tween_property(go, "global_position:y", target.global_position.y, 1).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
 		tween.parallel().tween_property(go, "skew", 720, 1).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
 		
-		await get_tree().create_timer(0.5).timeout
+		#await get_tree().create_timer(0.5).timeout
+		await tween.finished
 		if on_hit_anim_end and on_hit_anim_end.is_valid():
 			on_hit_anim_end.call()
-		await tween.finished
 		
 		go.queue_free()
 		

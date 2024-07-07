@@ -123,8 +123,6 @@ func show_next_type():
 			var go = TERIS_PREVIEW.instantiate()
 			preview_teris.add_child(go)
 			go.position = Vector2(i * 88 * 0.5, j * 88 * 0.5)
-			pass
-	pass
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("move_left"):
