@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://vp43s5xlc00l"]
+[gd_scene load_steps=5 format=3 uid="uid://vp43s5xlc00l"]
 
 [ext_resource type="Texture2D" uid="uid://bsystodpstd7j" path="res://Assets/background.png" id="1_nd2kt"]
 [ext_resource type="Script" path="res://Scripts/shop.gd" id="1_v4igi"]
 [ext_resource type="Texture2D" uid="uid://c432jm3vbohy3" path="res://Assets/emojis/u1f47d_u1f339.png" id="3_7gfkc"]
+[ext_resource type="PackedScene" uid="uid://choa630x4iqp5" path="res://Scenes/shop_element.tscn" id="4_endh4"]
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -42,7 +43,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -686.0
 offset_top = -290.0
-offset_right = 688.0
+offset_right = 367.0
 offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -89,9 +90,59 @@ horizontal_alignment = 2
 
 [node name="OwnedFlowers" type="Label" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 498.0
-offset_top = 495.0
-offset_right = 1169.0
-offset_bottom = 647.0
+offset_left = 398.0
+offset_top = 542.0
+offset_right = 1069.0
+offset_bottom = 694.0
 theme_override_font_sizes/font_size = 111
 text = "Your Flower:"
+
+[node name="EnemyRegion" type="NinePatchRect" parent="NinePatchRect"]
+modulate = Color(0.604695, 0.604695, 0.604695, 1)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -384.0
+offset_top = -250.0
+offset_bottom = 250.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("1_nd2kt")
+region_rect = Rect2(22, 21, 335, 86)
+
+[node name="EnemyElement" type="VBoxContainer" parent="NinePatchRect/EnemyRegion"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 160
+alignment = 1
+
+[node name="ShopElement" parent="NinePatchRect/EnemyRegion/EnemyElement" instance=ExtResource("4_endh4")]
+layout_mode = 2
+
+[node name="ShopElement2" parent="NinePatchRect/EnemyRegion/EnemyElement" instance=ExtResource("4_endh4")]
+layout_mode = 2
+
+[node name="ShopElement3" parent="NinePatchRect/EnemyRegion/EnemyElement" instance=ExtResource("4_endh4")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NinePatchRect/EnemyRegion"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 1.0
+offset_top = -82.0
+offset_right = 1.0
+offset_bottom = 3.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 41
+text = "Next Enemy"
+horizontal_alignment = 1
+vertical_alignment = 1

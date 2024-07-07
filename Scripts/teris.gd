@@ -229,9 +229,10 @@ func teris_down() -> void:
 			# 固定起来
 			current_fall_chunk.clear()
 			# 检查是否可以消除
+			await check_and_clear()
 			OnTerisLand.emit()
-			check_and_clear()
-			$SpawnTimer.start()
+			if len(Absolute.hit_anim_bus) == 0:
+				$SpawnTimer.start()
 	# 没有问题，可以掉下去
 	for fall_grid in fall_chunk:
 			# 不固定，往下掉
@@ -252,6 +253,7 @@ func fall_down_fast(teris_above: Array[Vector2i]):
 	var has_reach_below := false
 	
 	while not has_reach_below:
+		fall_chunk.sort_custom(func(a, b): return a.y > b.y)
 		lowest_y = fall_chunk[0].y
 		for fall_grid in fall_chunk:
 			if fall_grid.y != lowest_y:
@@ -284,8 +286,10 @@ func check_and_clear() -> void:
 		if is_clearable:
 			for i in range(GRID_WIDTH):
 				var teris: TerisElement = Grid[i][j].teris_hold
-				teris.hide()
-				get_tree().create_timer(2).timeout.connect(func(): teris.queue_free())
+				teris.on_elimited()
+				await teris.post_eliminate
+				#teris.hide()
+				#get_tree().create_timer(2).timeout.connect(func(): teris.queue_free())
 				#teris.queue_free()
 				Grid[i][j].teris_hold = null
 			#把这一行以上的所有内容设计为fall_chunks

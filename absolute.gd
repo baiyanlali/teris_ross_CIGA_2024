@@ -46,8 +46,13 @@ func _process(delta: float) -> void:
 			shop_window.show_shop()
 		if BluePlayer.HP <= 0:
 			get_tree().change_scene_to_file("res://Scenes/false_scene.tscn")
-
+	if last_anim_bus_length !=0 and len(hit_anim_bus) == 0 and TerisManager:
+		TerisManager.resume_game()
+	last_anim_bus_length = len(hit_anim_bus)
+	
+		
 var hit_anim_bus := []
+var last_anim_bus_length := 0
 
 const TRANS_TYPES_FOR_HIT = [
 	Tween.TRANS_BACK,
@@ -59,13 +64,22 @@ const TRANS_TYPES_FOR_HIT = [
 	Tween.TRANS_QUAD,
 ]
 
+
 func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlayer, on_hit_anim_start: Callable, on_hit_anim_end: Callable):
 	var animation := func():
 		TerisManager.stop_game()
-		if on_hit_anim_start and on_hit_anim_start.is_valid():
+		
+		if not elemt:
+			hit_anim_bus.pop_front()
+			if len(hit_anim_bus) != 0:
+				var anim_func = hit_anim_bus[0]
+				anim_func.call()
+			return
+			
+		if on_hit_anim_start and on_hit_anim_start.is_valid() and on_hit_anim_start.get_object() != null:
 			on_hit_anim_start.call()
-		if not elemt or not target:
-			TerisManager.resume_game()
+			
+		if not target:
 			hit_anim_bus.pop_front()
 			if len(hit_anim_bus) != 0:
 				var anim_func = hit_anim_bus[0]
@@ -97,7 +111,6 @@ func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlaye
 		if not TerisManager:
 			hit_anim_bus = []
 			return
-		TerisManager.resume_game()
 		hit_anim_bus.pop_front()
 		if len(hit_anim_bus) != 0:
 			var anim_func = hit_anim_bus[0]

@@ -5,11 +5,9 @@ class_name ShopElement
 @onready var button: Button = $Button
 @onready var label: Label = $Label
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	
+func _make_custom_tooltip(for_text):
+	print(for_text)
+	var tooltip = preload("res://Scenes/tool_tip.tscn").instantiate()
+	tooltip.get_node("Label").text = for_text
+	return tooltip

@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://choa630x4iqp5"]
+[gd_scene load_steps=3 format=3 uid="uid://choa630x4iqp5"]
 
 [ext_resource type="Script" path="res://Scripts/shop_element.gd" id="1_np08h"]
+
+[sub_resource type="GDScript" id="GDScript_euga7"]
+script/source = "extends Button
+
+
+func _make_custom_tooltip(for_text):
+	return null
+	print(for_text)
+	var tooltip = preload(\"res://Scenes/tool_tip.tscn\").instantiate()
+	tooltip.get_node(\"Label\").text = for_text
+	return tooltip
+"
 
 [node name="ShopElement" type="Control"]
 layout_mode = 3
@@ -28,6 +40,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 100
 text = "🌹"
+script = SubResource("GDScript_euga7")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1

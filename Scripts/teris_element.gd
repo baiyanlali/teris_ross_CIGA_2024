@@ -1,6 +1,6 @@
 extends Node2D
 class_name TerisElement
-
+signal post_eliminate
 class ElementType:
 	var target: String = "null"
 	var power: int = 1
@@ -8,6 +8,7 @@ class ElementType:
 	var emoji: String = "👋"
 	var cost: int = 1
 	var max_count_down: int = 3
+	var on_eliminate_target : String = "null"
 	func _init() -> void:
 		pass
 	
@@ -25,25 +26,38 @@ class ElementType:
 		if self.target == "self":
 			return player
 		return null
-	
+	func get_eliminate_target(player: EmojiPlayer, opponent: EmojiPlayer):
+		if self.on_eliminate_target == "null":
+			return null
+		if self.on_eliminate_target == "opponent":
+			return opponent
+		if self.on_eliminate_target == "self":
+			return player
+		return null
+	func on_elimited(player: EmojiPlayer, opponent: EmojiPlayer):
+		#var target = get_target(player, opponent)
+		pass
 
 class Rose extends ElementType:
 	func _init() -> void:
 		self.emoji = "🌹"
 		self.power = 1
-		self.description = "Hit enemy."
+		self.description = "攻击1HP.\n消除时攻击5HP."
 		self.target = "opponent"
 		self.cost = 1
 		var max_count_down: int = 2
 	
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
 		opponent.HP -= self.power
+		
+	func on_elimited(player: EmojiPlayer, opponent: EmojiPlayer):
+		opponent.HP -= self.power * 5
 
 class Lotus extends ElementType:
 	func _init() -> void:
 		self.emoji = "🪷"
 		self.power = 1
-		self.description = "Heal player."
+		self.description = "治疗1HP."
 		self.target = "self"
 		self.cost = 10
 		var max_count_down: int = 3
@@ -55,7 +69,7 @@ class SunFlower extends ElementType:
 	func _init() -> void:
 		self.emoji = "🌻"
 		self.power = 1
-		self.description = "Enpower surroundings."
+		self.description = "增强四周."
 		self.target == "null"
 		self.cost = 6
 		var max_count_down: int = 1
@@ -137,7 +151,33 @@ func teris_count_down():
 				element_type.take_effect(emoji_player, opponent_player)
 				count_down = element_type.max_count_down
 		)
-		
+
+func on_elimited():
+	count_down = 6
+	var target = element_type.get_target(emoji_player, opponent_player)
+	if target == null:
+		await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2).finished
+		post_eliminate.emit()
+		self.queue_free()
+	else:
+		Absolute.start_hit_anim(
+			self,
+			emoji_player,
+			element_type.get_target(emoji_player, opponent_player), 
+			func(): 
+				if not self:
+					return
+				trauma = 1,
+			func(): 
+				if not self:
+					return
+				element_type.on_elimited(emoji_player, opponent_player)
+				await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2).finished
+				post_eliminate.emit()
+				self.queue_free()
+				,
+		)
+	
 func _process(delta):
 	emoji.text = element_type.emoji
 	if trauma:

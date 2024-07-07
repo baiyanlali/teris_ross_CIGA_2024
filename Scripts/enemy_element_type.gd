@@ -6,7 +6,7 @@ class Archer extends TerisElement.ElementType:
 	func _init() -> void:
 		self.emoji = "🫷"
 		self.power = 2
-		self.description = "Hit player."
+		self.description = "攻击2HP."
 		self.target = "opponent"
 		self.cost = 999
 	
@@ -18,7 +18,7 @@ class Reaper extends TerisElement.ElementType:
 	func _init() -> void:
 		self.emoji = "𓀏"
 		self.power = 1
-		self.description = "Enpower surroundings."
+		self.description = "削弱四周."
 		self.target == "null"
 		self.cost = 9999
 		
