@@ -1,6 +1,6 @@
 extends Node
 signal on_money_changed
-var SPEED_VAR = 1
+var SPEED_VAR := 1.0
 
 @onready var tween: Tween = create_tween()
 const HIT_PARTICLE = preload("res://Scenes/hit_particle.tscn")
@@ -9,7 +9,8 @@ var TerisManager: TerisManager = null
 var BluePlayer: EmojiPlayer = null
 var YellowPlayer: EmojiPlayer = null
 
-var player_type: Array = [TerisElement.Immortal.new()]
+#var player_type: Array = [TerisElement.Immortal.new()]
+var player_type: Array = [TerisElement.Rose.new()]
 
 var current_level := 1
 
@@ -55,10 +56,9 @@ func next_level_config():
 		player_money += 20
 		
 		enemy_type = [
-			EnemyElementType.Archer.new(),
-			EnemyElementType.Archer.new(),
 			EnemyElementType.Reaper.new(),
-			EnemyElementType.Reaper.new()
+			EnemyElementType.HoneyBee.new(),
+			EnemyElementType.HoneyBee.new(),
 		]
 	if current_level == 4:
 		game_end = true
@@ -95,9 +95,9 @@ func _process(delta: float) -> void:
 	last_anim_bus_length = len(hit_anim_bus)
 	
 	if Input.is_action_pressed("speed_up"):
-		SPEED_VAR = 5
+		SPEED_VAR = 5.0
 	else:
-		SPEED_VAR = 1
+		SPEED_VAR = 1.0
 		
 var hit_anim_bus := []
 var last_anim_bus_length := 0

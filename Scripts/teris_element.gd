@@ -87,10 +87,10 @@ class SunFlower extends ElementType:
 	func _init() -> void:
 		self.emoji = "🌻"
 		self.power = 1
-		self.description = "增强四周."
+		self.description = "周围冷却-1."
 		self.target == "null"
 		self.cost = 6
-		var max_count_down: int = 1
+		var max_count_down: int = 2
 		
 	func before_take_effect(element: TerisElement):
 		var pos = element.teris_owner.grid_pos
@@ -111,7 +111,6 @@ class SunFlower extends ElementType:
 @onready var count_down_label: Label = $Control/CountDown
 
 var teris_owner: TerisGrid
-@export var max_count_down := 3
 @onready var element_type : ElementType = Rose.new()
 
 @onready var count_down := 3:
@@ -127,6 +126,7 @@ const BORDER_BLUE = preload("res://Assets/Border_blue.png")
 const BORDER_YELLOW = preload("res://Assets/Border_yellow.png")
 
 func _ready() -> void:
+	count_down = element_type.max_count_down
 	count_down_label.text = str(count_down)
 	emoji.text = "🌹"
 	
@@ -167,15 +167,16 @@ func teris_count_down():
 				if not self:
 					return
 				element_type.take_effect(emoji_player, opponent_player)
-				count_down = element_type.max_count_down
 		)
+		count_down = element_type.max_count_down
+	
 
 func on_elimited():
 	count_down = 6
 	var target = element_type.get_eliminate_target(emoji_player, opponent_player)
 	if target == null:
 		Absolute.start_eliminate_anim(func():
-			await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2).finished
+			await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2 / Absolute.SPEED_VAR).finished
 			post_eliminate.emit()
 			self.queue_free()
 		)
@@ -193,7 +194,7 @@ func on_elimited():
 				if not self:
 					return
 				element_type.on_elimited(emoji_player, opponent_player)
-				await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2).finished
+				await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2 / Absolute.SPEED_VAR).finished
 				post_eliminate.emit()
 				self.queue_free()
 				,

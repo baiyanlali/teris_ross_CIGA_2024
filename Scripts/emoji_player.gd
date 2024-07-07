@@ -18,9 +18,9 @@ class_name EmojiPlayer
 		else:
 			health_change.text = str(val - HP)
 		
-		get_tree().create_timer(5).timeout.connect(func(): health_change.text = "")
+		get_tree().create_timer(5 / Absolute.SPEED_VAR).timeout.connect(func(): health_change.text = "")
 		
-		var tn := create_tween().tween_property(sprite, "position", sprite.position + HitDirection, 0.5)
+		var tn := create_tween().tween_property(sprite, "position", sprite.position + HitDirection, 0.5 / Absolute.SPEED_VAR)
 		tn.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		if val < HP:
 			sprite.texture = EMOJI_HIT
@@ -37,11 +37,12 @@ class_name EmojiPlayer
 
 @onready var progress_bar: ProgressBar = $Control/ProgressBar
 @onready var timer: Timer = $Timer
-
+@onready var initial_pos: Vector2
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	initial_pos = sprite.position
 	sprite.texture = EMOJI_NORMAL
 	progress_bar.max_value = MAXHP
 	HP = MAXHP
@@ -53,5 +54,5 @@ func back_to_normal_face():
 	else:
 		sprite.texture = EMOJI_NORMAL
 	
-	var tn := create_tween().tween_property(sprite, "position", sprite.position - HitDirection, 0.2)
+	var tn := create_tween().tween_property(sprite, "position", initial_pos, 0.2 / Absolute.SPEED_VAR)
 	tn.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)

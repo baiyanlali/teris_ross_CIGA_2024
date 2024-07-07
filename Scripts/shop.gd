@@ -31,6 +31,7 @@ func _ready() -> void:
 	
 	tween.tween_property(self, "position:y", 0, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	next.pressed.connect(close_shop)
+	sync_type(Absolute.player_type)
 	
 func on_buy_type(element: TerisElement.ElementType):
 	if Absolute.player_money <= 0 or Absolute.player_money - element.cost < 0:

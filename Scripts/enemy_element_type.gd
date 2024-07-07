@@ -17,11 +17,12 @@ class Archer extends TerisElement.ElementType:
 
 class Reaper extends TerisElement.ElementType:
 	func _init() -> void:
-		self.emoji = "𓀏"
+		self.emoji = "🐝"
 		self.power = 1
-		self.description = "削弱四周."
+		self.description = "周围冷却+1."
 		self.target == "null"
 		self.cost = 9999
+		self.max_count_down = 3
 		
 	func before_take_effect(element: TerisElement):
 		var pos = element.teris_owner.grid_pos
@@ -35,3 +36,17 @@ class Reaper extends TerisElement.ElementType:
 			var surr: TerisElement = Absolute.TerisManager.Grid[target_pos.x][target_pos.y].teris_hold
 			if surr:
 				surr.count_down += 1
+
+
+class HoneyBee extends TerisElement.ElementType:
+	func _init() -> void:
+		self.emoji = "🔫"
+		self.power = 10
+		self.description = "攻击%dHP." % self.power
+		self.target = "opponent"
+		self.cost = 1
+		self.on_eliminate_target = "opponent"
+		var max_count_down: int = 5
+	
+	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
+		opponent.HP -= self.power
