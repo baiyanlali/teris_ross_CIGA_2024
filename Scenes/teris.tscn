@@ -12,6 +12,7 @@
 script = ExtResource("1_mf6rc")
 
 [node name="Button" type="Button" parent="."]
+visible = false
 offset_left = 102.0
 offset_top = 85.0
 offset_right = 182.0
@@ -49,3 +50,18 @@ grow_vertical = 2
 [node name="Shop" parent="Control" instance=ExtResource("7_mqgp8")]
 z_index = 100
 layout_mode = 1
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -198.5
+offset_right = 198.5
+offset_bottom = 111.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 81
+text = "🌹🔪❤️"
+
+[node name="PreviewTeris" type="Node2D" parent="Control/Label"]
+position = Vector2(681.5, 98)

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckoxmf5ydilet"]
+
+[ext_resource type="Script" path="res://Scripts/grid_container.gd" id="1_afqc6"]
+[ext_resource type="Texture2D" uid="uid://dyko7du3cl4yg" path="res://Assets/orange.png" id="2_idl17"]
+
+[node name="TerisGrid" type="Node2D"]
+z_index = -1
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_afqc6")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_idl17")

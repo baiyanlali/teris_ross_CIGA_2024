@@ -64,6 +64,22 @@ const TRANS_TYPES_FOR_HIT = [
 	Tween.TRANS_QUAD,
 ]
 
+func start_eliminate_anim(anim: Callable):
+	
+	var animation := func():
+		await anim.call()
+		
+		hit_anim_bus.pop_front()
+		if len(hit_anim_bus) != 0:
+			var anim_func = hit_anim_bus[0]
+			anim_func.call()
+	
+	hit_anim_bus.append(animation)
+	
+	if len(hit_anim_bus) == 1:
+		await hit_anim_bus[0].call()
+		
+		
 
 func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlayer, on_hit_anim_start: Callable, on_hit_anim_end: Callable):
 	var animation := func():
@@ -99,14 +115,16 @@ func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlaye
 				go.sprite.modulate = Color.BLUE
 		
 		tween = create_tween()
-		tween.tween_property(go, "global_position:x", target.global_position.x, 1).set_ease(Tween.EASE_OUT).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
-		tween.parallel().tween_property(go, "global_position:y", target.global_position.y, 1).set_ease(Tween.EASE_OUT).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
-		tween.parallel().tween_property(go, "skew", 720, 1).set_ease(Tween.EASE_OUT).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		tween.tween_property(go, "global_position:x", target.global_position.x, 1).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		tween.parallel().tween_property(go, "global_position:y", target.global_position.y, 1).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		tween.parallel().tween_property(go, "skew", 720, 1).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
 		
 		await get_tree().create_timer(0.5).timeout
 		if on_hit_anim_end and on_hit_anim_end.is_valid():
 			on_hit_anim_end.call()
 		await tween.finished
+		
+		go.queue_free()
 		
 		if not TerisManager:
 			hit_anim_bus = []

@@ -9,6 +9,7 @@ class Archer extends TerisElement.ElementType:
 		self.description = "攻击2HP."
 		self.target = "opponent"
 		self.cost = 999
+		self.on_eliminate_target = "null"
 	
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
 		opponent.HP -= self.power

@@ -74,6 +74,8 @@ var current_player : Player= Player.BLUE
 var current_fall_chunk: Array[Vector2i] = []
 @onready var shop: Shop = $Control/Shop
 
+@onready var next_type = AVAILABLE_CHUNK_TYPE.pick_random()
+
 func start_game():
 	print("start game")
 	Absolute.TerisManager = self
@@ -101,13 +103,28 @@ func _ready() -> void:
 	
 	$SpawnTimer.timeout.connect(func(): 
 		if len(current_fall_chunk) == 0:
-			var type = AVAILABLE_CHUNK_TYPE.pick_random()
-			var chunks := generate_chunks(type, Vector2i(randi_range(0, GRID_WIDTH - 1 - len(type)), 0))
+			#var type = AVAILABLE_CHUNK_TYPE.pick_random()
+			var chunks := generate_chunks(next_type, Vector2i(randi_range(0, GRID_WIDTH - 1 - len(next_type)), 0))
 			current_fall_chunk.append_array(chunks)
+			next_type = AVAILABLE_CHUNK_TYPE.pick_random()
+			show_next_type()
 		)
 	$Timer.timeout.connect(teris_down)
-
-
+	
+@onready var preview_teris: Node2D = $Control/Label/PreviewTeris
+const TERIS_PREVIEW = preload("res://Scenes/teris_preview.tscn")
+func show_next_type():
+	for c in preview_teris.get_children():
+		c.queue_free()
+	for i in range(len(next_type)):
+		for j in range(len(next_type[0])):
+			if next_type[i][j] != 1:
+				continue
+			var go = TERIS_PREVIEW.instantiate()
+			preview_teris.add_child(go)
+			go.position = Vector2(i * 88 * 0.5, j * 88 * 0.5)
+			pass
+	pass
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("move_left"):

@@ -45,6 +45,7 @@ class Rose extends ElementType:
 		self.description = "攻击1HP.\n消除时攻击5HP."
 		self.target = "opponent"
 		self.cost = 1
+		self.on_eliminate_target = "opponent"
 		var max_count_down: int = 2
 	
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
@@ -154,16 +155,19 @@ func teris_count_down():
 
 func on_elimited():
 	count_down = 6
-	var target = element_type.get_target(emoji_player, opponent_player)
+	var target = element_type.get_eliminate_target(emoji_player, opponent_player)
 	if target == null:
-		await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2).finished
-		post_eliminate.emit()
-		self.queue_free()
+		Absolute.start_eliminate_anim(func():
+			await create_tween().tween_property(self, "scale", Vector2.ZERO, 0.2).finished
+			post_eliminate.emit()
+			self.queue_free()
+		)
+		
 	else:
 		Absolute.start_hit_anim(
 			self,
 			emoji_player,
-			element_type.get_target(emoji_player, opponent_player), 
+			element_type.get_eliminate_target(emoji_player, opponent_player), 
 			func(): 
 				if not self:
 					return
