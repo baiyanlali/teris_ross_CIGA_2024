@@ -1,6 +1,7 @@
 extends Node2D
 class_name EmojiPlayer
 
+
 @export var EMOJI_NORMAL: Texture
 @export var EMOJI_HIT: Texture
 @export var EMOJI_HAPPY: Texture

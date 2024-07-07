@@ -1,0 +1,113 @@
+[gd_scene load_steps=7 format=3 uid="uid://ecal5jvye6hp"]
+
+[ext_resource type="Texture2D" uid="uid://d0ht0mby8nm54" path="res://Assets/white.png" id="1_uuif6"]
+[ext_resource type="Shader" path="res://Shaders/main_menu.gdshader" id="2_bwo8d"]
+[ext_resource type="Texture2D" uid="uid://e4hnn7om8e27" path="res://Assets/bg.png" id="3_ebapd"]
+[ext_resource type="Texture2D" uid="uid://cg6sr7vkokkuc" path="res://bg.jpg" id="4_p75f6"]
+
+[sub_resource type="GDScript" id="GDScript_j6a1i"]
+script/source = "extends Control
+
+@onready var button: Button = $Button
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	button.pressed.connect(func():
+		get_tree().change_scene_to_file(\"res://Scenes/main_menu.tscn\"))
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3vaif"]
+shader = ExtResource("2_bwo8d")
+shader_parameter/scroll_speed = 0.08
+shader_parameter/angle_degrees = 45.0
+shader_parameter/repeat_x = 5.0
+shader_parameter/repeat_y = 5.0
+shader_parameter/row_offset = 1.0
+shader_parameter/texture_to_scroll = ExtResource("3_ebapd")
+
+[node name="WinScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_j6a1i")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+modulate = Color(1, 0.760784, 0.780392, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_uuif6")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_3vaif")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_p75f6")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -521.0
+offset_top = -398.0
+offset_right = 521.0
+offset_bottom = -137.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 191
+text = "你保卫了母星
+击退了人类"
+horizontal_alignment = 1
+
+[node name="Credit" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1146.0
+offset_top = -268.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 91
+text = "制作人：白炎"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -186.0
+offset_top = 42.0
+offset_right = 186.0
+offset_bottom = 298.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 181
+text = "Restart"

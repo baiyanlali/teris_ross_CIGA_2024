@@ -54,6 +54,23 @@ class Rose extends ElementType:
 	func on_elimited(player: EmojiPlayer, opponent: EmojiPlayer):
 		opponent.HP -= self.power * 5
 
+
+class Immortal extends ElementType:
+	func _init() -> void:
+		self.emoji = "👑"
+		self.power = 50
+		self.description = "攻击1HP.\n消除时攻击5HP."
+		self.target = "opponent"
+		self.cost = 1
+		self.on_eliminate_target = "opponent"
+		var max_count_down: int = 1
+	
+	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
+		opponent.HP -= self.power
+		
+	func on_elimited(player: EmojiPlayer, opponent: EmojiPlayer):
+		opponent.HP -= self.power * 5
+
 class Lotus extends ElementType:
 	func _init() -> void:
 		self.emoji = "🪷"

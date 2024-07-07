@@ -84,6 +84,13 @@ func start_game():
 	
 	Absolute.BluePlayer.HP = Absolute.BluePlayer.MAXHP
 	Absolute.YellowPlayer.HP = Absolute.YellowPlayer.MAXHP
+
+	for i in range(GRID_WIDTH):
+		for j in range(GRID_HEIGHT):
+			var go = Grid[i][j]
+			if go.teris_hold:
+				go.teris_hold.queue_free()
+			go.teris_hold = null
 	
 	$SpawnTimer.start()
 	$Timer.start()
@@ -102,6 +109,8 @@ func _ready() -> void:
 	shop.show_shop()
 	
 	$SpawnTimer.timeout.connect(func(): 
+		if len(Absolute.hit_anim_bus) != 0:
+			return
 		if len(current_fall_chunk) == 0:
 			#var type = AVAILABLE_CHUNK_TYPE.pick_random()
 			var chunks := generate_chunks(next_type, Vector2i(randi_range(0, GRID_WIDTH - 1 - len(next_type)), 0))
