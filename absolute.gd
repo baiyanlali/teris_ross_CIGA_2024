@@ -14,6 +14,8 @@ var player_type: Array = [TerisElement.Rose.new()]
 
 var current_level := 1
 
+var on_shop := false
+
 var enemy_type: Array = [
 	EnemyElementType.Archer.new(),
 ]
@@ -91,7 +93,8 @@ func _process(delta: float) -> void:
 		if BluePlayer and BluePlayer.HP <= 0:
 			get_tree().change_scene_to_file("res://Scenes/false_scene.tscn")
 	if last_anim_bus_length !=0 and len(hit_anim_bus) == 0 and TerisManager:
-		TerisManager.resume_game()
+		if not shop_window.on_shop:
+			TerisManager.resume_game()
 	last_anim_bus_length = len(hit_anim_bus)
 	
 	if Input.is_action_pressed("speed_up"):

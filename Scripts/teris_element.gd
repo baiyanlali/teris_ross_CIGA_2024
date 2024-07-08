@@ -115,8 +115,14 @@ var teris_owner: TerisGrid
 
 @onready var count_down := 3:
 	set(value):
-		count_down = value
-		count_down_label.text = str(count_down)
+		if count_down != value:
+			count_down = value
+			count_down_label.text = str(count_down)
+			var tween = create_tween()
+			var origin_scale = count_down_label.scale
+			tween.tween_property(count_down_label, "scale", origin_scale * 1.2, 0.1)
+			tween.tween_property(count_down_label, "scale", origin_scale, 0.1)
+		
 		
 
 var player_owner: TerisManager.Player
@@ -167,8 +173,8 @@ func teris_count_down():
 				if not self:
 					return
 				element_type.take_effect(emoji_player, opponent_player)
+				count_down = element_type.max_count_down
 		)
-		count_down = element_type.max_count_down
 	
 
 func on_elimited():

@@ -14,6 +14,8 @@ const buy_type := [TerisElement.Rose, TerisElement.Lotus, TerisElement.SunFlower
 @onready var tween := create_tween()
 @onready var enemy_element: VBoxContainer = $NinePatchRect/EnemyRegion/EnemyElement
 
+var on_shop = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Absolute.shop_window = self
@@ -41,6 +43,7 @@ func on_buy_type(element: TerisElement.ElementType):
 	sync_type(Absolute.player_type)
 
 func show_shop():
+	on_shop = true
 	sync_money(Absolute.player_money)
 	sync_enemy_type()
 	tween = create_tween()
@@ -52,6 +55,7 @@ func close_shop():
 	tween = create_tween()
 	await tween.tween_property(self, "position:y", 1080, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
 	on_shop_close.emit()
+	on_shop = false
 
 func sync_enemy_type():
 	var enemy_type = Absolute.enemy_type
