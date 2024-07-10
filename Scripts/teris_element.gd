@@ -178,7 +178,7 @@ func teris_count_down():
 	
 
 func on_elimited():
-	count_down = 6
+	count_down_label.text = ""
 	var target = element_type.get_eliminate_target(emoji_player, opponent_player)
 	if target == null:
 		Absolute.start_eliminate_anim(func():
@@ -188,14 +188,14 @@ func on_elimited():
 		)
 		
 	else:
-		Absolute.start_hit_anim(
+		Absolute.start_eliminate_hit_anim(
 			self,
 			emoji_player,
 			element_type.get_eliminate_target(emoji_player, opponent_player), 
 			func(): 
 				if not self:
 					return
-				trauma = 1,
+				trauma = 0,
 			func(): 
 				if not self:
 					return

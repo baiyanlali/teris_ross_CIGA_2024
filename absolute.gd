@@ -107,10 +107,8 @@ var last_anim_bus_length := 0
 
 const TRANS_TYPES_FOR_HIT = [
 	Tween.TRANS_BACK,
-	Tween.TRANS_BOUNCE,
 	Tween.TRANS_CIRC,
 	Tween.TRANS_CUBIC,
-	Tween.TRANS_EXPO,
 	Tween.TRANS_LINEAR,
 	Tween.TRANS_QUAD,
 ]
@@ -175,6 +173,49 @@ func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlaye
 			on_hit_anim_end.call()
 		
 		go.queue_free()
+		
+		if not TerisManager:
+			hit_anim_bus = []
+			return
+		hit_anim_bus.pop_front()
+		if len(hit_anim_bus) != 0:
+			var anim_func = hit_anim_bus[0]
+			anim_func.call()
+
+	hit_anim_bus.append(animation)
+	
+	if len(hit_anim_bus) == 1:
+		await hit_anim_bus[0].call()
+
+
+func start_eliminate_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlayer, on_hit_anim_start: Callable, on_hit_anim_end: Callable):
+	var animation := func():
+		TerisManager.stop_game()
+		
+		if not elemt:
+			hit_anim_bus.pop_front()
+			if len(hit_anim_bus) != 0:
+				var anim_func = hit_anim_bus[0]
+				anim_func.call()
+			return
+			
+		if on_hit_anim_start and on_hit_anim_start.is_valid() and on_hit_anim_start.get_object() != null:
+			on_hit_anim_start.call()
+			
+		if not target:
+			hit_anim_bus.pop_front()
+			if len(hit_anim_bus) != 0:
+				var anim_func = hit_anim_bus[0]
+				anim_func.call()
+			return
+		elemt.teris_owner.teris_hold = null
+		tween = create_tween()
+		tween.tween_property(elemt, "global_position:x", target.global_position.x, 1 / SPEED_VAR).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		tween.parallel().tween_property(elemt, "global_position:y", target.global_position.y, 1 / SPEED_VAR).set_ease(Tween.EASE_IN).set_trans(TRANS_TYPES_FOR_HIT.pick_random())
+		
+		await tween.finished
+		if on_hit_anim_end and on_hit_anim_end.is_valid():
+			on_hit_anim_end.call()
 		
 		if not TerisManager:
 			hit_anim_bus = []
