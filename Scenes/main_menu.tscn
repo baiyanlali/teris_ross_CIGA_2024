@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://x8u4eve6dn6v"]
+[gd_scene load_steps=11 format=3 uid="uid://x8u4eve6dn6v"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_58byw"]
 [ext_resource type="Texture2D" uid="uid://d0ht0mby8nm54" path="res://Assets/white.png" id="1_e8x4o"]
 [ext_resource type="Shader" path="res://Shaders/main_menu.gdshader" id="1_vfvmv"]
 [ext_resource type="Texture2D" uid="uid://e4hnn7om8e27" path="res://Assets/bg.png" id="2_4i4ko"]
 [ext_resource type="Texture2D" uid="uid://cg6sr7vkokkuc" path="res://bg.jpg" id="2_udqdh"]
+[ext_resource type="FontVariation" uid="uid://dqopr8uv0glyx" path="res://emoji_font.tres" id="6_hj4eb"]
+[ext_resource type="FontFile" uid="uid://cywc17obied3h" path="res://Assets/NotoColorEmoji-Regular.ttf" id="6_q6n4b"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xefii"]
 shader = ExtResource("1_vfvmv")
@@ -14,6 +16,12 @@ shader_parameter/repeat_x = 5.0
 shader_parameter/repeat_y = 5.0
 shader_parameter/row_offset = 1.0
 shader_parameter/texture_to_scroll = ExtResource("2_4i4ko")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omusa"]
+bg_color = Color(1, 0.756863, 0.780392, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_dtqou"]
+fallbacks = Array[Font]([ExtResource("6_q6n4b")])
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -44,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_udqdh")
 
-[node name="Label" type="Label" parent="."]
+[node name="Title" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -58,8 +66,30 @@ offset_bottom = -137.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 70
+theme_override_fonts/font = ExtResource("6_hj4eb")
 theme_override_font_sizes/font_size = 191
-text = "Rose Battle"
+text = "🌹🗡️"
+horizontal_alignment = 1
+
+[node name="Credit" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -474.0
+offset_top = -140.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("6_hj4eb")
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_omusa")
+text = "🎨：▫️🔥"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1
@@ -74,5 +104,6 @@ offset_right = 186.0
 offset_bottom = 298.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = SubResource("FontVariation_dtqou")
 theme_override_font_sizes/font_size = 181
-text = "Play"
+text = "🕹️"
