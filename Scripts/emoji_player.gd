@@ -13,14 +13,18 @@ class_name EmojiPlayer
 @export var MAXHP: int = 100
 @onready var HP: int = MAXHP:
 	set(val):
+		
 		if health_change.text != "":
 			health_change.text = str(health_change.text.to_int() + (val - HP))
 		else:
 			health_change.text = str(val - HP)
 		
-		get_tree().create_timer(5 / Absolute.SPEED_VAR).timeout.connect(func(): health_change.text = "")
+		get_tree().create_timer(7 / Absolute.SPEED_VAR).timeout.connect(func(): health_change.text = "")
 		
-		var tn := create_tween().tween_property(sprite, "position", sprite.position + HitDirection, 0.5 / Absolute.SPEED_VAR)
+		var final_pos := sprite.position + HitDirection * log(abs(health_change.text.to_int()))
+		
+		
+		var tn := create_tween().tween_property(sprite, "position", final_pos, 0.5 / Absolute.SPEED_VAR)
 		tn.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		if val < HP:
 			sprite.texture = EMOJI_HIT
