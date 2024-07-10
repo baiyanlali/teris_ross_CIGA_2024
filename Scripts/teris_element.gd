@@ -46,7 +46,7 @@ class Rose extends ElementType:
 		self.target = "opponent"
 		self.cost = 1
 		self.on_eliminate_target = "opponent"
-		var max_count_down: int = 2
+		self.max_count_down = 2
 	
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
 		opponent.HP -= self.power
@@ -78,7 +78,7 @@ class Lotus extends ElementType:
 		self.description = "治疗1HP."
 		self.target = "self"
 		self.cost = 10
-		var max_count_down: int = 3
+		self.max_count_down = 3
 		
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
 		player.HP += self.power
@@ -90,7 +90,7 @@ class SunFlower extends ElementType:
 		self.description = "周围冷却-1."
 		self.target == "null"
 		self.cost = 6
-		var max_count_down: int = 2
+		self.max_count_down = 2
 		
 	func before_take_effect(element: TerisElement):
 		var pos = element.teris_owner.grid_pos
@@ -113,7 +113,7 @@ class SunFlower extends ElementType:
 var teris_owner: TerisGrid
 @onready var element_type : ElementType = Rose.new()
 
-@onready var count_down := 3:
+@onready var count_down := 1:
 	set(value):
 		if count_down != value:
 			count_down = value

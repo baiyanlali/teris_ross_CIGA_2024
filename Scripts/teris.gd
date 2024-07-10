@@ -60,9 +60,7 @@ const AVAILABLE_CHUNK_TYPE = [
 	TYPE6,
 ]
 
-#const AVAILABLE_CHUNK_TYPE = [
-	#TYPE2,
-#]
+
 enum Player {
 	BLUE, YELLOW
 }
@@ -209,6 +207,7 @@ func generate_chunks(chunks: Array, offset: Vector2i = Vector2i.ZERO) -> Array[V
 				#sprite.modulate = Color(1, 0, 0, 1)
 				go.scale = get_grid_size(size)
 				Grid[x][y].teris_hold = go
+				
 				if current_player == Player.BLUE:
 					go.element_type = Absolute.player_type.pick_random()
 				else:
@@ -325,6 +324,8 @@ func check_and_clear() -> void:
 			fall_down_fast(new_fall_chunk)
 				#teris_down()	
 
+func is_legal(positions: Array[Vector2i], offset: Array[Vector2i]) -> bool:
+	return true
 
 func check_boundary(pos: Vector2i):
 	if pos.x >=0 and pos.x < GRID_WIDTH and pos.y >=0 and pos.y < GRID_HEIGHT:

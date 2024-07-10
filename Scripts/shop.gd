@@ -72,7 +72,7 @@ func sync_enemy_type():
 		go.label.text = enemy.description	
 
 func sync_type(arr: Array):
-	owned_flowers.text = "Your flowers: \n"
+	owned_flowers.text = "\n"
 	for a in arr:
 		owned_flowers.text += a.emoji
 

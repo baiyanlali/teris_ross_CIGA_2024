@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://choa630x4iqp5"]
+[gd_scene load_steps=5 format=3 uid="uid://choa630x4iqp5"]
 
 [ext_resource type="Script" path="res://Scripts/shop_element.gd" id="1_np08h"]
+[ext_resource type="FontVariation" uid="uid://dqopr8uv0glyx" path="res://emoji_font.tres" id="2_csccr"]
 
 [sub_resource type="GDScript" id="GDScript_euga7"]
 script/source = "extends Button
@@ -14,47 +15,51 @@ func _make_custom_tooltip(for_text):
 	return tooltip
 "
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujusb"]
+bg_color = Color(0.6, 0.6, 0.6, 0.482353)
+
 [node name="ShopElement" type="Control"]
+custom_minimum_size = Vector2(400, 200)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_right = 400.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_np08h")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -59.0
-offset_top = -72.5
-offset_right = 59.0
-offset_bottom = 72.5
+offset_left = -92.5
+offset_right = 92.5
+offset_bottom = 145.0
 grow_horizontal = 2
-grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_csccr")
 theme_override_font_sizes/font_size = 100
-text = "🌹"
+text = "  🌹"
 script = SubResource("GDScript_euga7")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -43.0
-offset_top = 15.0
-offset_right = 44.0
-offset_bottom = 85.0
+anchor_bottom = 1.0
+offset_left = -145.5
+offset_top = -70.0
+offset_right = 145.5
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 51
+theme_override_styles/normal = SubResource("StyleBoxFlat_ujusb")
 text = "$$$$$$$$$$"
 horizontal_alignment = 1

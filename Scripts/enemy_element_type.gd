@@ -10,6 +10,7 @@ class Archer extends TerisElement.ElementType:
 		self.target = "opponent"
 		self.cost = 999
 		self.on_eliminate_target = "null"
+		self.max_count_down = 3
 	
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
 		opponent.HP -= self.power
@@ -45,8 +46,7 @@ class HoneyBee extends TerisElement.ElementType:
 		self.description = "攻击%dHP." % self.power
 		self.target = "opponent"
 		self.cost = 1
-		self.on_eliminate_target = "opponent"
-		var max_count_down: int = 5
+		self.max_count_down = 5
 	
 	func take_effect(player: EmojiPlayer, opponent: EmojiPlayer):
 		opponent.HP -= self.power

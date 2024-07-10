@@ -129,7 +129,7 @@ func start_eliminate_anim(anim: Callable):
 	
 	if len(hit_anim_bus) == 1:
 		await hit_anim_bus[0].call()
-		
+
 
 func start_hit_anim(elemt: TerisElement, origin: EmojiPlayer, target: EmojiPlayer, on_hit_anim_start: Callable, on_hit_anim_end: Callable):
 	var animation := func():
