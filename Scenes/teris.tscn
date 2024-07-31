@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://stvrrappn8jf"]
+[gd_scene load_steps=10 format=3 uid="uid://stvrrappn8jf"]
 
 [ext_resource type="Script" path="res://Scripts/teris.gd" id="1_mf6rc"]
 [ext_resource type="PackedScene" uid="uid://wq7365nilp3d" path="res://Scenes/emoji_player.tscn" id="2_3e7lx"]
@@ -8,9 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://djkb4lcx0kcvg" path="res://Assets/emojis/u1f604_u1f62d.png" id="5_g27y3"]
 [ext_resource type="Texture2D" uid="uid://cjvvgkngmpnjx" path="res://Assets/emojis/u1f604_u1f630.png" id="6_0w3oj"]
 [ext_resource type="PackedScene" uid="uid://vp43s5xlc00l" path="res://Scenes/shop.tscn" id="7_mqgp8"]
+[ext_resource type="Texture2D" uid="uid://dilmrodicb6vv" path="res://DesignRawAssets/background.png" id="9_vqkc8"]
 
 [node name="Teris" type="Node2D"]
 script = ExtResource("1_mf6rc")
+
+[node name="BackGround" type="Sprite2D" parent="."]
+z_index = -100
+position = Vector2(960, 540)
+texture = ExtResource("9_vqkc8")
 
 [node name="Button" type="Button" parent="."]
 visible = false

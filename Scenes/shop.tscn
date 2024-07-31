@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://vp43s5xlc00l"]
+[gd_scene load_steps=8 format=3 uid="uid://vp43s5xlc00l"]
 
 [ext_resource type="Texture2D" uid="uid://bsystodpstd7j" path="res://Assets/background.png" id="1_nd2kt"]
 [ext_resource type="Script" path="res://Scripts/shop.gd" id="1_v4igi"]
 [ext_resource type="Texture2D" uid="uid://c432jm3vbohy3" path="res://Assets/emojis/u1f47d_u1f339.png" id="3_7gfkc"]
 [ext_resource type="PackedScene" uid="uid://choa630x4iqp5" path="res://Scenes/shop_element.tscn" id="4_endh4"]
 [ext_resource type="FontVariation" uid="uid://dqopr8uv0glyx" path="res://emoji_font.tres" id="4_p8xom"]
+
+[sub_resource type="Gradient" id="Gradient_0se2d"]
+colors = PackedColorArray(0.854902, 0.388235, 0.407843, 1, 0.468966, 0.102305, 0.102305, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jeo54"]
+gradient = SubResource("Gradient_0se2d")
 
 [node name="Shop" type="Control"]
 layout_mode = 3
@@ -18,15 +24,12 @@ grow_vertical = 2
 script = ExtResource("1_v4igi")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
+self_modulate = Color(1, 0.451146, 0.451146, 1)
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 170.0
-offset_top = 85.0
-offset_right = -170.0
-offset_bottom = -85.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_nd2kt")
@@ -34,22 +37,378 @@ region_rect = Rect2(20, 2, 328, 125)
 patch_margin_top = 25
 patch_margin_bottom = 18
 
+[node name="ShopBG" type="Control" parent="NinePatchRect"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GridContainer" type="GridContainer" parent="NinePatchRect/ShopBG"]
+modulate = Color(1, 1, 1, 0.254902)
+layout_mode = 0
+offset_left = -341.0
+offset_top = 119.0
+offset_right = 1614.0
+offset_bottom = 1305.0
+rotation = -0.319511
+theme_override_constants/h_separation = 80
+columns = 5
+
+[node name="ShopTitles" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles2" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles3" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles4" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles5" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles6" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles7" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles8" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles9" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles10" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles11" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles12" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles13" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles14" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles15" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles16" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles17" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles18" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles19" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles20" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles21" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles22" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles23" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles24" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles25" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles26" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles27" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles28" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles29" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles30" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles31" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles32" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles33" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles34" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles35" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles36" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles37" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles38" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles39" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles40" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="ShopTitles41" type="Label" parent="NinePatchRect/ShopBG/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 121
+text = "SHOP"
+
+[node name="Items" type="TextureRect" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = -168.0
+offset_top = 610.0
+offset_right = 366.0
+offset_bottom = 1144.0
+texture = ExtResource("3_7gfkc")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect"]
 custom_minimum_size = Vector2(300, 2.08165e-12)
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 75.0
-offset_top = -251.0
-offset_right = 1128.0
-offset_bottom = 49.0
+offset_left = -526.5
+offset_top = -280.0
+offset_right = 526.5
+offset_bottom = 20.0
+grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(2.08165e-12, 2.08165e-12)
 theme_override_constants/separation = -80
 alignment = 1
 
-[node name="Shop" type="Label" parent="NinePatchRect"]
+[node name="ShopTitle" type="Label" parent="NinePatchRect"]
+visible = false
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
@@ -59,30 +418,23 @@ theme_override_constants/outline_size = 20
 theme_override_font_sizes/font_size = 121
 text = "SHOP"
 
-[node name="TextureRect" type="TextureRect" parent="NinePatchRect"]
-modulate = Color(1, 1, 1, 0.54902)
-layout_mode = 0
-offset_left = -135.0
-offset_top = 441.0
-offset_right = 399.0
-offset_bottom = 975.0
-texture = ExtResource("3_7gfkc")
-
 [node name="Next" type="Button" parent="NinePatchRect"]
 layout_mode = 0
-offset_left = 1166.0
-offset_top = 725.0
-offset_right = 1556.0
-offset_bottom = 885.0
+offset_left = 1517.0
+offset_top = 887.0
+offset_right = 1907.0
+offset_bottom = 1047.0
 theme_override_font_sizes/font_size = 111
-text = "Next>>"
+text = ">>>>"
 
 [node name="Money" type="Label" parent="NinePatchRect"]
-layout_mode = 0
-offset_left = 1075.0
-offset_top = 18.0
-offset_right = 1575.0
-offset_bottom = 75.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -500.0
+offset_bottom = 57.0
+grow_horizontal = 0
 pivot_offset = Vector2(500, 57)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 41
@@ -90,22 +442,36 @@ text = "Money: 1"
 horizontal_alignment = 2
 
 [node name="OwnedFlowers" type="Label" parent="NinePatchRect"]
-layout_mode = 0
-offset_left = 398.0
-offset_top = 542.0
-offset_right = 1069.0
-offset_bottom = 694.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -335.5
+offset_top = 111.0
+offset_right = 335.5
+offset_bottom = 397.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("4_p8xom")
 theme_override_font_sizes/font_size = 111
 text = "
 🌹"
 
 [node name="OwnedFlowersLabel" type="Label" parent="NinePatchRect"]
-layout_mode = 0
-offset_left = 398.0
-offset_top = 542.0
-offset_right = 1069.0
-offset_bottom = 694.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -335.5
+offset_top = 116.0
+offset_right = 335.5
+offset_bottom = 268.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 20
@@ -113,7 +479,7 @@ theme_override_font_sizes/font_size = 111
 text = "Your Flower:"
 
 [node name="EnemyRegion" type="NinePatchRect" parent="NinePatchRect"]
-modulate = Color(0.604695, 0.604695, 0.604695, 1)
+self_modulate = Color(1, 1, 1, 0.882353)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -121,11 +487,11 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -384.0
-offset_top = -250.0
-offset_bottom = 250.0
+offset_top = -451.0
+offset_bottom = 315.0
 grow_horizontal = 0
 grow_vertical = 2
-texture = ExtResource("1_nd2kt")
+texture = SubResource("GradientTexture1D_jeo54")
 region_rect = Rect2(22, 21, 335, 86)
 
 [node name="EnemyElement" type="VBoxContainer" parent="NinePatchRect/EnemyRegion"]

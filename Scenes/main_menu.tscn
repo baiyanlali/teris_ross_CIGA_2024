@@ -1,21 +1,22 @@
-[gd_scene load_steps=11 format=3 uid="uid://x8u4eve6dn6v"]
+[gd_scene load_steps=12 format=3 uid="uid://x8u4eve6dn6v"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_58byw"]
 [ext_resource type="Texture2D" uid="uid://d0ht0mby8nm54" path="res://Assets/white.png" id="1_e8x4o"]
 [ext_resource type="Shader" path="res://Shaders/main_menu.gdshader" id="1_vfvmv"]
-[ext_resource type="Texture2D" uid="uid://e4hnn7om8e27" path="res://Assets/bg.png" id="2_4i4ko"]
-[ext_resource type="Texture2D" uid="uid://cg6sr7vkokkuc" path="res://bg.jpg" id="2_udqdh"]
+[ext_resource type="Texture2D" uid="uid://dilmrodicb6vv" path="res://DesignRawAssets/background.png" id="2_b1mvs"]
+[ext_resource type="Texture2D" uid="uid://bwrwxjt28xwlf" path="res://Assets/bg2.png" id="4_jfht5"]
 [ext_resource type="FontVariation" uid="uid://dqopr8uv0glyx" path="res://emoji_font.tres" id="6_hj4eb"]
 [ext_resource type="FontFile" uid="uid://cywc17obied3h" path="res://Assets/NotoColorEmoji-Regular.ttf" id="6_q6n4b"]
+[ext_resource type="Texture2D" uid="uid://b1fnb6j1i1g41" path="res://DesignRawAssets/title.png" id="8_b2snm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xefii"]
 shader = ExtResource("1_vfvmv")
 shader_parameter/scroll_speed = 0.08
 shader_parameter/angle_degrees = 45.0
-shader_parameter/repeat_x = 5.0
-shader_parameter/repeat_y = 5.0
+shader_parameter/repeat_x = 10.0
+shader_parameter/repeat_y = 10.0
 shader_parameter/row_offset = 1.0
-shader_parameter/texture_to_scroll = ExtResource("2_4i4ko")
+shader_parameter/texture_to_scroll = ExtResource("4_jfht5")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omusa"]
 bg_color = Color(1, 0.756863, 0.780392, 1)
@@ -33,26 +34,34 @@ grow_vertical = 2
 script = ExtResource("1_58byw")
 
 [node name="TextureRect2" type="TextureRect" parent="."]
-modulate = Color(0, 0, 0, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_e8x4o")
+texture = ExtResource("2_b1mvs")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_xefii")
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_udqdh")
+scale = Vector2(10, 10)
+pivot_offset = Vector2(128, 128)
+texture = ExtResource("1_e8x4o")
 
 [node name="Title" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -74,6 +83,7 @@ text = "Rose Battle"
 horizontal_alignment = 1
 
 [node name="Credit" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -107,3 +117,12 @@ grow_vertical = 2
 theme_override_fonts/font = SubResource("FontVariation_dtqou")
 theme_override_font_sizes/font_size = 181
 text = "🕹️"
+
+[node name="Title2" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 141.0
+offset_top = -1.0
+offset_right = 1845.0
+offset_bottom = 567.0
+texture = ExtResource("8_b2snm")
+expand_mode = 1
